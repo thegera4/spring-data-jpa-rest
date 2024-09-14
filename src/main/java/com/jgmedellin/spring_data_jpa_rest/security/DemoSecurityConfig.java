@@ -6,36 +6,22 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration // This is a configuration class
 public class DemoSecurityConfig {
 
-    // Create users with different roles
+    // Add support for JDBC authentication (no more hard-coded users)
     @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        UserDetails john = User.builder()
-                .username("john")
-                .password("{noop}test123") // {noop} is for plain text passwords (no operation = no encoding)
-                .roles("EMPLOYEE")
-                .build();
-
-        UserDetails mary = User.builder()
-                .username("mary")
-                .password("{noop}test123")
-                .roles("EMPLOYEE", "MANAGER")
-                .build();
-
-        UserDetails susan = User.builder()
-                .username("susan")
-                .password("{noop}test123")
-                .roles("EMPLOYEE", "MANAGER", "ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(john, mary, susan);
+    public UserDetailsManager userDetailsManager(DataSource dataSource) { //datasource is automatically created by Spring Boot
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     // Restrict access based on roles
@@ -59,4 +45,28 @@ public class DemoSecurityConfig {
 
         return http.build();
     }
+
+    // Create users with different roles (without a database table)
+    /*@Bean
+    public InMemoryUserDetailsManager userDetailsManager() {
+        UserDetails john = User.builder()
+                .username("john")
+                .password("{noop}test123") // {noop} is for plain text passwords (no operation = no encoding)
+                .roles("EMPLOYEE")
+                .build();
+
+        UserDetails mary = User.builder()
+                .username("mary")
+                .password("{noop}test123")
+                .roles("EMPLOYEE", "MANAGER")
+                .build();
+
+        UserDetails susan = User.builder()
+                .username("susan")
+                .password("{noop}test123")
+                .roles("EMPLOYEE", "MANAGER", "ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(john, mary, susan);
+    }*/
 }

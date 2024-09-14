@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `authorities`;
 DROP TABLE IF EXISTS `users`;
 
 --
--- Table structure for table `users`
+-- Table structure for table `users`, spring security predefined schemas
 --
 
 CREATE TABLE `users` (
@@ -15,7 +15,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Inserting data for table `users`
+-- Inserting data for table `users`, needed for Spring Security
 --
 
 INSERT INTO `users`
@@ -26,7 +26,7 @@ VALUES
 
 
 --
--- Table structure for table `authorities`
+-- Table structure for table `authorities`, needed for Spring Security
 --
 
 CREATE TABLE `authorities` (
@@ -37,7 +37,7 @@ CREATE TABLE `authorities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Inserting data for table `authorities`
+-- Inserting data for table `authorities` , ROLE_ prefix is needed for Spring Security
 --
 
 INSERT INTO `authorities`
