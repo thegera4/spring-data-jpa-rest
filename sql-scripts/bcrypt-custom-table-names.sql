@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `roles`;
 DROP TABLE IF EXISTS `members`;
 
 --
--- Table structure for table `members`
+-- Table structure for table `members`,  this is an example for custom tables (not spring security default)
 --
 
 CREATE TABLE `members` (

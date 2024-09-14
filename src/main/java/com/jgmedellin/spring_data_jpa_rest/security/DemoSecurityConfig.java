@@ -21,7 +21,15 @@ public class DemoSecurityConfig {
     // Add support for JDBC authentication (no more hard-coded users)
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) { //datasource is automatically created by Spring Boot
-        return new JdbcUserDetailsManager(dataSource);
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+
+        //define query to retrieve user by username (needed for custom tables, not spring default schemas)
+        jdbcUserDetailsManager.setUsersByUsernameQuery("select user_id, pw, active from members where user_id=?");
+
+        //define query to retrieve authorities/roles by username (needed for custom tables, not spring default schemas)
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("select user_id, role from roles where user_id=?");
+
+        return jdbcUserDetailsManager;
     }
 
     // Restrict access based on roles
